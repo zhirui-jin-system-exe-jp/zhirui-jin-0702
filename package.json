@@ -1,0 +1,35 @@
+{
+  "name": "onsen-iyashi-kan",
+  "version": "1.0.0",
+  "description": "🛁 温泉癒し館 - 美しい温泉グッズと入浴剤を販売するオンラインショップ",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000",
+    "dev": "npx http-server -p 8000 -o",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "echo 'Deployment handled by GitHub Actions'"
+  },
+  "keywords": [
+    "温泉",
+    "入浴剤",
+    "オンラインショップ",
+    "ecommerce",
+    "spa",
+    "bath-products",
+    "japanese",
+    "onsen"
+  ],
+  "author": "温泉癒し館",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/onsen-iyashi-kan.git"
+  },
+  "homepage": "https://YOUR_USERNAME.github.io/onsen-iyashi-kan/",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
