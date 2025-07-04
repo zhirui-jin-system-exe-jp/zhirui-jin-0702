@@ -1,0 +1,17 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lavenderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E6E6FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9370DB;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="200" fill="#F8F8FF"/>
+  <circle cx="150" cy="100" r="60" fill="url(#lavenderGrad)" stroke="#8A2BE2" stroke-width="3"/>
+  <text x="150" y="110" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4B0082">ラベンダー入浴剤</text>
+  <rect x="130" y="60" width="4" height="20" fill="#228B22"/>
+  <ellipse cx="132" cy="55" rx="8" ry="12" fill="#9370DB"/>
+  <rect x="160" y="65" width="4" height="18" fill="#228B22"/>
+  <ellipse cx="162" cy="60" rx="7" ry="10" fill="#8A2BE2"/>
+  <rect x="145" y="70" width="4" height="15" fill="#228B22"/>
+  <ellipse cx="147" cy="65" rx="6" ry="8" fill="#9932CC"/>
+</svg>

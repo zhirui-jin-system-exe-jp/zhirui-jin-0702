@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温泉癒し館 - 入浴剤・温泉グッズ通販</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script src="js/products-data.js"></script>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">🛁 温泉癒し館</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="catalog.html">商品カタログ</a></li>
+                    <li><a href="cart.html">カート</a></li>
+                    <li><a href="fortune.html">今日の運勢</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>🌸 温泉癒し館へようこそ 🌸</h1>
+            <p>自宅で本格的な温泉体験を。厳選された入浴剤と温泉グッズをお届けします。</p>
+            <a href="catalog.html" class="cta-button">商品を見る</a>
+        </section>
+
+        <section class="featured-products">
+            <h2 class="text-center mb-2">おすすめ商品</h2>
+            <div class="products-grid" id="featured-products">
+                <!-- JavaScriptで動的に生成 -->
+            </div>
+        </section>
+
+        <section class="features mt-2">
+            <h2 class="text-center mb-2">温泉癒し館の特徴</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">🌿</div>
+                    <div class="product-name">厳選素材</div>
+                    <div class="product-description">
+                        国産の天然素材にこだわり、安心・安全な商品のみを取り扱っています。
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🚚</div>
+                    <div class="product-name">迅速配送</div>
+                    <div class="product-description">
+                        ご注文から最短翌日お届け。お急ぎの場合もお気軽にご相談ください。
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">💝</div>
+                    <div class="product-name">ギフト包装</div>
+                    <div class="product-description">
+                        大切な方への贈り物に。無料でギフト包装を承っております。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fortune-preview mt-2">
+            <div class="fortune-container">
+                <h2>🔮 今日の運勢をチェック！</h2>
+                <p>あなたの今日の運勢と、ラッキーアイテムをお教えします。</p>
+                <a href="fortune.html" class="btn btn-secondary">占いページへ</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 温泉癒し館. All rights reserved.</p>
+        <p>〒000-0000 東京都温泉区癒し町1-2-3 | TEL: 03-0000-0000</p>
+    </footer>
+
+    <script>
+        // おすすめ商品を表示
+        function loadFeaturedProducts() {
+            try {
+                const featuredProducts = productsData.products.slice(0, 3); // 最初の3商品を表示
+                
+                const container = document.getElementById('featured-products');
+                container.innerHTML = featuredProducts.map(product => `
+                    <div class="product-card fade-in">
+                        <div class="product-image">${product.name}の画像</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">¥${product.price.toLocaleString()}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-stock">在庫: ${product.stock}個</div>
+                        <a href="detail.html?id=${product.id}" class="btn btn-primary">詳細を見る</a>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('商品データの読み込みに失敗しました:', error);
+                document.getElementById('featured-products').innerHTML =
+                    '<p class="text-center">商品データの読み込みに失敗しました。</p>';
+            }
+        }
+
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', loadFeaturedProducts);
+    </script>
+</body>
+</html>

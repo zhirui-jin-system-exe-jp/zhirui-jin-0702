@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品カタログ - 温泉癒し館</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script src="js/products-data.js"></script>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">🛁 温泉癒し館</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="catalog.html">商品カタログ</a></li>
+                    <li><a href="cart.html">カート</a></li>
+                    <li><a href="fortune.html">今日の運勢</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="catalog-header">
+            <h1 class="text-center mb-2">🛍️ 商品カタログ</h1>
+            <p class="text-center">厳選された入浴剤と温泉グッズをご覧ください</p>
+        </section>
+
+        <section class="filters mb-2">
+            <div class="form-container">
+                <h3>商品を絞り込む</h3>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                    <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                        <label for="category-filter">カテゴリー:</label>
+                        <select id="category-filter">
+                            <option value="">すべて</option>
+                            <option value="入浴剤">入浴剤</option>
+                            <option value="温泉グッズ">温泉グッズ</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                        <label for="sort-filter">並び順:</label>
+                        <select id="sort-filter">
+                            <option value="name">名前順</option>
+                            <option value="price-low">価格の安い順</option>
+                            <option value="price-high">価格の高い順</option>
+                            <option value="stock">在庫の多い順</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                        <label for="search-input">商品名検索:</label>
+                        <input type="text" id="search-input" placeholder="商品名を入力...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <div id="products-count" class="text-center mb-2"></div>
+            <div class="products-grid" id="products-container">
+                <!-- JavaScriptで動的に生成 -->
+            </div>
+            <div id="no-products" class="text-center hidden">
+                <p>条件に合う商品が見つかりませんでした。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 温泉癒し館. All rights reserved.</p>
+        <p>〒000-0000 東京都温泉区癒し町1-2-3 | TEL: 03-0000-0000</p>
+    </footer>
+
+    <script src="js/catalog.js"></script>
+</body>
+</html>

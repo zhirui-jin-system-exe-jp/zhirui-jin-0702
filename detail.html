@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品詳細 - 温泉癒し館</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .product-detail-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #ddd6fe 0%, #c7d2fe 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .product-detail-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-detail-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #5a4a3a;
+            margin-bottom: 1rem;
+        }
+        
+        .product-detail-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fd79a8;
+            margin-bottom: 1rem;
+        }
+        
+        .product-detail-category {
+            background: linear-gradient(135deg, #a8d8ea 0%, #aa96da 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-detail-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .product-detail-stock {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            text-align: center;
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        
+        .quantity-btn {
+            background: #a8d8ea;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background: #74b9ff;
+        }
+        
+        .add-to-cart-section {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .product-detail-name {
+                font-size: 1.5rem;
+            }
+            
+            .product-detail-price {
+                font-size: 2rem;
+            }
+            
+            .add-to-cart-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="js/products-data.js"></script>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">🛁 温泉癒し館</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="catalog.html">商品カタログ</a></li>
+                    <li><a href="cart.html">カート</a></li>
+                    <li><a href="fortune.html">今日の運勢</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div style="margin-bottom: 2rem;">
+            <a href="catalog.html" class="btn btn-secondary">← 商品カタログに戻る</a>
+        </div>
+
+        <div id="product-detail-container">
+            <!-- JavaScriptで動的に生成 -->
+        </div>
+
+        <div id="product-not-found" class="text-center hidden">
+            <h2>商品が見つかりません</h2>
+            <p>指定された商品は存在しないか、削除された可能性があります。</p>
+            <a href="catalog.html" class="btn btn-primary">商品カタログに戻る</a>
+        </div>
+
+        <section class="related-products mt-2">
+            <h2 class="text-center mb-2">関連商品</h2>
+            <div class="products-grid" id="related-products">
+                <!-- JavaScriptで動的に生成 -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 温泉癒し館. All rights reserved.</p>
+        <p>〒000-0000 東京都温泉区癒し町1-2-3 | TEL: 03-0000-0000</p>
+    </footer>
+
+    <script>
+        let currentProduct = null;
+        let allProducts = [];
+
+        // URLパラメータから商品IDを取得
+        function getProductIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return parseInt(urlParams.get('id'));
+        }
+
+        // 商品データを読み込む
+        function loadProductData() {
+            try {
+                allProducts = productsData.products;
+                
+                const productId = getProductIdFromUrl();
+                if (!productId) {
+                    showProductNotFound();
+                    return;
+                }
+                
+                currentProduct = allProducts.find(p => p.id === productId);
+                if (!currentProduct) {
+                    showProductNotFound();
+                    return;
+                }
+                
+                displayProductDetail();
+                displayRelatedProducts();
+                
+            } catch (error) {
+                console.error('商品データの読み込みに失敗しました:', error);
+                showProductNotFound();
+            }
+        }
+
+        // 商品詳細を表示
+        function displayProductDetail() {
+            const container = document.getElementById('product-detail-container');
+            container.innerHTML = `
+                <div class="product-detail">
+                    <div class="product-detail-image">
+                        ${currentProduct.name}の画像
+                    </div>
+                    <div class="product-detail-info">
+                        <div class="product-detail-category">${currentProduct.category}</div>
+                        <h1 class="product-detail-name">${currentProduct.name}</h1>
+                        <div class="product-detail-price">¥${currentProduct.price.toLocaleString()}</div>
+                        <div class="product-detail-description">${currentProduct.description}</div>
+                        <div class="product-detail-stock">
+                            <strong>在庫状況:</strong> 
+                            ${currentProduct.stock > 0 ? 
+                                `<span style="color: #00b894;">在庫あり（${currentProduct.stock}個）</span>` : 
+                                '<span style="color: #e17055;">在庫切れ</span>'
+                            }
+                        </div>
+                        ${currentProduct.stock > 0 ? `
+                            <div class="quantity-selector">
+                                <label for="quantity">数量:</label>
+                                <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                                <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="${currentProduct.stock}">
+                                <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                            </div>
+                            <div class="add-to-cart-section">
+                                <button onclick="addToCart()" class="btn btn-primary" style="flex: 1;">カートに追加</button>
+                                <a href="cart.html" class="btn btn-secondary" style="flex: 1;">カートを見る</a>
+                            </div>
+                        ` : `
+                            <div class="add-to-cart-section">
+                                <button class="btn" style="background: #ccc; cursor: not-allowed; flex: 1;" disabled>在庫切れ</button>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 関連商品を表示
+        function displayRelatedProducts() {
+            const relatedProducts = allProducts
+                .filter(p => p.id !== currentProduct.id && p.category === currentProduct.category)
+                .slice(0, 3);
+            
+            const container = document.getElementById('related-products');
+            if (relatedProducts.length === 0) {
+                container.innerHTML = '<p class="text-center">関連商品はありません。</p>';
+                return;
+            }
+            
+            container.innerHTML = relatedProducts.map(product => `
+                <div class="product-card fade-in">
+                    <div class="product-image">${product.name}の画像</div>
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">¥${product.price.toLocaleString()}</div>
+                    <div class="product-description">${product.description}</div>
+                    <div class="product-stock">在庫: ${product.stock}個</div>
+                    <a href="detail.html?id=${product.id}" class="btn btn-primary">詳細を見る</a>
+                </div>
+            `).join('');
+        }
+
+        // 商品が見つからない場合の表示
+        function showProductNotFound() {
+            document.getElementById('product-detail-container').style.display = 'none';
+            document.getElementById('related-products').parentElement.style.display = 'none';
+            document.getElementById('product-not-found').classList.remove('hidden');
+        }
+
+        // 数量を変更
+        function changeQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let newQuantity = parseInt(quantityInput.value) + change;
+            
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > currentProduct.stock) newQuantity = currentProduct.stock;
+            
+            quantityInput.value = newQuantity;
+        }
+
+        // カートに追加
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            if (quantity <= 0 || quantity > currentProduct.stock) {
+                alert('正しい数量を入力してください。');
+                return;
+            }
+            
+            // ローカルストレージからカート情報を取得
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            
+            // 既にカートにある商品かチェック
+            const existingItem = cart.find(item => item.id === currentProduct.id);
+            
+            if (existingItem) {
+                const newQuantity = existingItem.quantity + quantity;
+                if (newQuantity > currentProduct.stock) {
+                    alert('在庫数を超えて追加することはできません。');
+                    return;
+                }
+                existingItem.quantity = newQuantity;
+            } else {
+                cart.push({
+                    id: currentProduct.id,
+                    name: currentProduct.name,
+                    price: currentProduct.price,
+                    quantity: quantity,
+                    stock: currentProduct.stock
+                });
+            }
+            
+            // カート情報をローカルストレージに保存
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // 成功メッセージを表示
+            alert(`${currentProduct.name} を ${quantity}個 カートに追加しました。`);
+        }
+
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', loadProductData);
+    </script>
+</body>
+</html>

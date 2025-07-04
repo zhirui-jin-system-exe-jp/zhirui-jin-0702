@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ショッピングカート - 温泉癒し館</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .cart-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .cart-items {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .cart-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ddd6fe 0%, #c7d2fe 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+        
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .cart-item-name {
+            font-weight: bold;
+            color: #5a4a3a;
+        }
+        
+        .cart-item-price {
+            color: #fd79a8;
+            font-weight: bold;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-btn {
+            background: #a8d8ea;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity-btn:hover {
+            background: #74b9ff;
+        }
+        
+        .quantity-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .remove-btn {
+            background: #e17055;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .remove-btn:hover {
+            background: #d63031;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        .summary-total {
+            border-top: 2px solid #e0e0e0;
+            padding-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">🛁 温泉癒し館</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="catalog.html">商品カタログ</a></li>
+                    <li><a href="cart.html">カート</a></li>
+                    <li><a href="fortune.html">今日の運勢</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="text-center mb-2">🛒 ショッピングカート</h1>
+        
+        <div class="cart-section">
+            <div class="cart-items">
+                <h2 style="margin-bottom: 1.5rem;">カート内商品</h2>
+                <div id="cart-items-container">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+                <div id="empty-cart" class="empty-cart hidden">
+                    <h3>カートは空です</h3>
+                    <p>商品をカートに追加してください。</p>
+                    <a href="catalog.html" class="btn btn-primary">商品を見る</a>
+                </div>
+            </div>
+            
+            <div class="cart-summary" id="cart-summary">
+                <h3 style="margin-bottom: 1.5rem;">注文概要</h3>
+                <div id="summary-content">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-form" id="checkout-form" style="display: none;">
+            <h2 style="margin-bottom: 1.5rem;">🏠 お届け先情報</h2>
+            <form id="order-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lastName">姓 *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">名 *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">メールアドレス *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">電話番号 *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="zipCode">郵便番号 *</label>
+                        <input type="text" id="zipCode" name="zipCode" placeholder="000-0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prefecture">都道府県 *</label>
+                        <select id="prefecture" name="prefecture" required>
+                            <option value="">選択してください</option>
+                            <option value="東京都">東京都</option>
+                            <option value="神奈川県">神奈川県</option>
+                            <option value="千葉県">千葉県</option>
+                            <option value="埼玉県">埼玉県</option>
+                            <!-- 他の都道府県も追加可能 -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">住所 *</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="building">建物名・部屋番号</label>
+                    <input type="text" id="building" name="building">
+                </div>
+                
+                <div class="form-group">
+                    <label for="deliveryDate">お届け希望日</label>
+                    <input type="date" id="deliveryDate" name="deliveryDate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">備考</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="配送に関するご要望などがございましたらご記入ください"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" onclick="hideCheckoutForm()" class="btn btn-secondary" style="flex: 1;">戻る</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">注文を確定する</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="order-success" class="text-center hidden" style="padding: 3rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin: 2rem 0;">
+            <h2 style="color: #00b894; margin-bottom: 1rem;">🎉 ご注文ありがとうございました！</h2>
+            <p style="margin-bottom: 2rem;">ご注文を承りました。確認メールをお送りいたします。</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="index.html" class="btn btn-primary">ホームに戻る</a>
+                <a href="catalog.html" class="btn btn-secondary">他の商品を見る</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 温泉癒し館. All rights reserved.</p>
+        <p>〒000-0000 東京都温泉区癒し町1-2-3 | TEL: 03-0000-0000</p>
+    </footer>
+
+    <script src="js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="towelPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#FFFFFF"/>
+      <rect x="0" y="0" width="4" height="4" fill="#E0E0E0"/>
+      <rect x="4" y="4" width="4" height="4" fill="#E0E0E0"/>
+    </pattern>
+  </defs>
+  <rect width="300" height="200" fill="#F5F5F5"/>
+  <rect x="50" y="60" width="100" height="80" fill="url(#towelPattern)" stroke="#87CEEB" stroke-width="2"/>
+  <rect x="160" y="80" width="80" height="60" fill="url(#towelPattern)" stroke="#87CEEB" stroke-width="2"/>
+  <text x="150" y="40" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4682B4">温泉タオルセット</text>
+  <rect x="55" y="65" width="90" height="4" fill="#87CEEB"/>
+  <rect x="55" y="75" width="90" height="4" fill="#87CEEB"/>
+  <rect x="55" y="125" width="90" height="4" fill="#87CEEB"/>
+  <rect x="55" y="135" width="90" height="4" fill="#87CEEB"/>
+  <rect x="165" y="85" width="70" height="3" fill="#87CEEB"/>
+  <rect x="165" y="95" width="70" height="3" fill="#87CEEB"/>
+  <rect x="165" y="125" width="70" height="3" fill="#87CEEB"/>
+  <rect x="165" y="135" width="70" height="3" fill="#87CEEB"/>
+  <text x="100" y="105" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#4682B4">バスタオル</text>
+  <text x="200" y="115" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="#4682B4">フェイスタオル</text>
+</svg>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日の運勢 - 温泉癒し館</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .fortune-main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .fortune-intro {
+            text-align: center;
+            background: linear-gradient(135deg, #ddd6fe 0%, #c7d2fe 100%);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        
+        .fortune-intro h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .fortune-button {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 2rem 0;
+        }
+        
+        .fortune-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .fortune-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .fortune-result-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        
+        .fortune-result-container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e, #a8d8ea, #aa96da);
+            border-radius: 20px;
+            z-index: -1;
+        }
+        
+        .fortune-category {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .fortune-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #5a4a3a;
+        }
+        
+        .fortune-score {
+            display: inline-block;
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .fortune-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+        
+        .lucky-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .lucky-item {
+            background: linear-gradient(135deg, #a8d8ea 0%, #aa96da 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .lucky-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lucky-item-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recommended-products {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+        
+        .recommended-products h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #fd79a8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fortune-history {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .fortune-intro h1 {
+                font-size: 2rem;
+            }
+            
+            .fortune-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+            
+            .lucky-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="js/products-data.js"></script>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">🛁 温泉癒し館</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">ホーム</a></li>
+                    <li><a href="catalog.html">商品カタログ</a></li>
+                    <li><a href="cart.html">カート</a></li>
+                    <li><a href="fortune.html">今日の運勢</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="fortune-main">
+        <section class="fortune-intro">
+            <h1>🔮 今日の運勢</h1>
+            <p>あなたの今日の運勢を占います。ラッキーアイテムやラッキーカラーもお教えします！</p>
+            <button id="fortune-button" class="fortune-button" onclick="getFortune()">
+                運勢を占う
+            </button>
+        </section>
+
+        <div id="loading" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <p>運勢を占っています...</p>
+        </div>
+
+        <div id="fortune-result" class="hidden">
+            <div class="fortune-result-container">
+                <div class="fortune-category">
+                    <h3>🌟 総合運</h3>
+                    <div id="overall-score" class="fortune-score"></div>
+                    <div id="overall-description" class="fortune-description"></div>
+                </div>
+            </div>
+
+            <div class="lucky-items">
+                <div class="lucky-item">
+                    <h4>🍀 ラッキーアイテム</h4>
+                    <div id="lucky-item" class="lucky-item-value"></div>
+                    <div id="lucky-item-description"></div>
+                </div>
+                <div class="lucky-item">
+                    <h4>🎨 ラッキーカラー</h4>
+                    <div id="lucky-color" class="lucky-item-value"></div>
+                    <div id="lucky-color-description"></div>
+                </div>
+                <div class="lucky-item">
+                    <h4>🔢 ラッキーナンバー</h4>
+                    <div id="lucky-number" class="lucky-item-value"></div>
+                    <div id="lucky-number-description"></div>
+                </div>
+            </div>
+
+            <div class="recommended-products">
+                <h3>✨ 今日のあなたにおすすめの商品</h3>
+                <div id="recommended-products-grid" class="products-grid">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="fortune-history">
+            <h3 style="margin-bottom: 1.5rem;">📅 占い履歴</h3>
+            <div id="fortune-history-list">
+                <!-- JavaScriptで動的に生成 -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 温泉癒し館. All rights reserved.</p>
+        <p>〒000-0000 東京都温泉区癒し町1-2-3 | TEL: 03-0000-0000</p>
+    </footer>
+
+    <script src="js/fortune.js"></script>
+</body>
+</html>
